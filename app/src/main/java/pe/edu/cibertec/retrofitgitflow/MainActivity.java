@@ -1,12 +1,14 @@
 package pe.edu.cibertec.retrofitgitflow;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textViewResult;
     private RecyclerView recyclerViewPosts;
+    private PostAdapter postAdapter;
+    private List<Post> postList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textViewResult = findViewById(R.id.textViewResult);
         recyclerViewPosts = findViewById(R.id.recyclerViewPosts);
+        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this));
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(postList);
+        recyclerViewPosts.setAdapter(postAdapter);
         callService();
     }
 
@@ -47,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
                     textViewResult.setText("Code: " + response.code());
                 } else {
                     List<Post> posts = response.body();
-                    /*for (Post post: posts) {
+                    postList.addAll(posts);
+                    postAdapter.notifyDataSetChanged();
+                    /*for (Post post: postList) {
                         String content = "";
                         content += "Id: " + post.getId() + "\n";
                         content += "userId: " + post.getUserId() + "\n";
