@@ -3,6 +3,7 @@ package pe.edu.cibertec.retrofitgitflow;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,8 +37,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public class PostViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView textViewTitle;
+        private TextView textViewBody;
+
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            textViewBody = itemView.findViewById(R.id.textViewBody);
+            textViewTitle = itemView.findViewById(R.id.textViewTitle);
         }
     }
 }
