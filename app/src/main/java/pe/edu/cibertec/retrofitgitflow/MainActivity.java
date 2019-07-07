@@ -1,10 +1,12 @@
 package pe.edu.cibertec.retrofitgitflow;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this));
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(postList);
+        postAdapter.setOnItemClickListener(new PostAdapter.ClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                TriggerClick.selectItem(postList.get(position).getId(), MainActivity.this);
+            }
+        });
         recyclerViewPosts.setAdapter(postAdapter);
         callService();
     }
@@ -57,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                     List<Post> posts = response.body();
                     postList.addAll(posts);
                     postAdapter.notifyDataSetChanged();
+                    textViewResult.setVisibility(View.VISIBLE);
+                    textViewResult.setText("Version: " + BuildConfig.VERSION_NAME);
                     /*for (Post post: postList) {
                         String content = "";
                         content += "Id: " + post.getId() + "\n";
