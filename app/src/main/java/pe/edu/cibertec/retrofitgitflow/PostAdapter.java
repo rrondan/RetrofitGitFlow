@@ -13,6 +13,7 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private List<Post> postList;
+    private ClickListener clickListener;
 
     public PostAdapter(List<Post> postList) {
         this.postList = postList;
@@ -38,15 +39,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return postList.size();
     }
 
-    public class PostViewHolder extends RecyclerView.ViewHolder{
+    public class PostViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener{
 
         private TextView textViewTitle;
         private TextView textViewBody;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             textViewBody = itemView.findViewById(R.id.textViewBody);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
         }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public final void setOnItemClickListener(ClickListener clickListener){
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener{
+        void onItemClick(int position);
     }
 }

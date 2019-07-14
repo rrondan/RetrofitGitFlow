@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this));
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(postList);
+        postAdapter.setOnItemClickListener(new PostAdapter.ClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                TriggerClick.selectItem(postList.get(position).getId(),
+                        MainActivity.this);
+            }
+        });
         recyclerViewPosts.setAdapter(postAdapter);
         callService();
     }
