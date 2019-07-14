@@ -36,14 +36,18 @@ public class MainPresenter implements MainContract.Presenter {
         mainInteractor.getAllPost(new MainInteractor.MainCallback() {
             @Override
             public void onGetPostSuccess(List<Post> posts) {
-                view.getAllPostSuccess(posts);
-                view.hideProgressBar();
+                if(isViewAttached()) {
+                    view.getAllPostSuccess(posts);
+                    view.hideProgressBar();
+                }
             }
 
             @Override
             public void onGetPostFailure(String errorMsg) {
-                view.showError(errorMsg);
-                view.hideProgressBar();
+                if(isViewAttached()) {
+                    view.showError(errorMsg);
+                    view.hideProgressBar();
+                }
             }
         });
     }
