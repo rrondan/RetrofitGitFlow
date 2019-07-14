@@ -1,4 +1,4 @@
-package pe.edu.cibertec.retrofitgitflow;
+package pe.edu.cibertec.retrofitgitflow.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
