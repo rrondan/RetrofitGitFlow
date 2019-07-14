@@ -1,4 +1,4 @@
-package pe.edu.cibertec.retrofitgitflow;
+package pe.edu.cibertec.retrofitgitflow.presentation.main.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import pe.edu.cibertec.retrofitgitflow.R;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
+    private PostClickListener clickListener;
     private List<Post> postList;
 
     public PostAdapter(List<Post> postList) {
         this.postList = postList;
+    }
+
+    public void setOnItemClickListener(PostClickListener clickListener){
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -47,6 +53,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null) {
+                        clickListener.onClick(getAdapterPosition());
+                    }
+                }
+            });
             textViewBody = itemView.findViewById(R.id.textViewBody);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
         }
