@@ -12,12 +12,11 @@ public interface IPostDetailInteractor {
     }
 
     interface PostDetailCommentCallBack{
-        void onSuccess(List<Comment> comments);
+        //void onSuccess(List<Comment> comments);
         void onError(String errorMsg);
     }
 
     void getPost(int postId, PostDetailCallBack callBack);
 
-    void getCommentsOfPost(int postId,
-                           PostDetailCommentCallBack callBack);
+    //void getCommentsOfPost(int postId,PostDetailCommentCallBack callBack);
 }

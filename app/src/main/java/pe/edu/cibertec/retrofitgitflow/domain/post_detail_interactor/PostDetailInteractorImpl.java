@@ -9,8 +9,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostDetailInteractorImpl
-    implements IPostDetailInteractor{
+public class PostDetailInteractorImpl implements IPostDetailInteractor{
     @Override
     public void getPost(int postId,
                            PostDetailCallBack callBack) {
