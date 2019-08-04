@@ -2,21 +2,28 @@ package pe.edu.cibertec.retrofitgitflow.presentation.post_detail.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import pe.edu.cibertec.retrofitgitflow.R;
+import pe.edu.cibertec.retrofitgitflow.base.BaseActivity;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
+import pe.edu.cibertec.retrofitgitflow.di.components.DaggerPresentationComponent;
+import pe.edu.cibertec.retrofitgitflow.di.modules.PresentationModule;
 import pe.edu.cibertec.retrofitgitflow.domain.post_detail_interactor.PostDetailInteractorImpl;
 import pe.edu.cibertec.retrofitgitflow.presentation.post_detail.IPostDetailContract;
 import pe.edu.cibertec.retrofitgitflow.presentation.post_detail.presenter.PostPresenter;
 
-public class PostDetailActivity extends AppCompatActivity
+public class PostDetailActivity extends BaseActivity
     implements IPostDetailContract.IView {
 
+    @Inject
     PostPresenter presenter;
     TextView idTextView;
     TextView userIdTextView;
@@ -27,21 +34,37 @@ public class PostDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_post_detail;
+    }
+
+    @Override
+    protected void onViewReady(Bundle savedInstanceState, Intent intent) {
+        super.onViewReady(savedInstanceState, intent);
         idTextView = findViewById(R.id.idTextView);
         userIdTextView = findViewById(R.id.userIdTextView);
         titleTextView = findViewById(R.id.titleTextView);
         bodyTextView = findViewById(R.id.bodyTextView);
         progressBar = findViewById(R.id.progressBar);
-
         int id = getIntent().getIntExtra("post_id", -1);
         if(id == -1){
             showError("No Nos llego el postId");
             finish();
         }
-        presenter = new PostPresenter(new PostDetailInteractorImpl());
         presenter.attachView(this);
         presenter.getPost(id);
+    }
+
+    @Override
+    protected void resolveDaggerDependency() {
+        DaggerPresentationComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .presentationModule(new PresentationModule())
+                .build().inject(this);
     }
 
     @Override

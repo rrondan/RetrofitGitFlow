@@ -2,28 +2,33 @@ package pe.edu.cibertec.retrofitgitflow;
 
 import android.app.Application;
 
-import pe.edu.cibertec.retrofitgitflow.di.components.DaggerPresentationComponent;
-import pe.edu.cibertec.retrofitgitflow.di.components.PresentationComponent;
-import pe.edu.cibertec.retrofitgitflow.di.modules.PresentationModule;
+import pe.edu.cibertec.retrofitgitflow.di.components.ApplicationComponent;
+import pe.edu.cibertec.retrofitgitflow.di.components.DaggerApplicationComponent;
+import pe.edu.cibertec.retrofitgitflow.di.modules.ApplicationModule;
 
 public class MyApplication extends Application {
 
-    private PresentationComponent appComponent;
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        inicializarComponent();
+        inicializarApplicationComponent();
     }
 
-    void inicializarComponent(){
-        appComponent = DaggerPresentationComponent
+    void inicializarApplicationComponent(){
+        applicationComponent = DaggerApplicationComponent
                 .builder()
-                .presentationModule(new PresentationModule())
+                .applicationModule(new ApplicationModule(this))
                 .build();
     }
 
-    public PresentationComponent getAppComponent() {
-        return appComponent;
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
     }
 }

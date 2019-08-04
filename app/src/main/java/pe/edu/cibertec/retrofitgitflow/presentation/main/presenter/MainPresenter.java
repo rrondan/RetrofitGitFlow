@@ -4,17 +4,21 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
 import pe.edu.cibertec.retrofitgitflow.domain.main_interactor.IMainInteractor;
 import pe.edu.cibertec.retrofitgitflow.presentation.main.IMainContract;
 
 public class MainPresenter implements IMainContract.IPresenter {
     IMainContract.IView view;
-    private final IMainInteractor interactor;
+    Disposable disposable;
 
     @Inject
-    public MainPresenter(IMainInteractor interactor) {
-        this.interactor = interactor;
+    protected IMainInteractor mainInteractor;
+
+    @Inject
+    public MainPresenter() {
     }
 
     @Override
@@ -24,6 +28,9 @@ public class MainPresenter implements IMainContract.IPresenter {
     @Override
     public void detachView() {
         view = null;
+        if(disposable != null) {
+            disposable.dispose();
+        }
     }
     @Override
     public boolean isViewAttached() {
@@ -32,23 +39,30 @@ public class MainPresenter implements IMainContract.IPresenter {
     @Override
     public void getAllPost() {
         view.showProgressBar();
-        interactor.getAllPost(new IMainInteractor.MainCallBack() {
-            @Override
-            public void onSuccess(List<Post> postList) {
-                if(isViewAttached()) {
-                    view.getAllPostSuccess(postList);
-                    view.hideProgressBar();
-                }
-            }
+        mainInteractor.getAllPost()
+                .subscribe(new Observer<List<Post>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+                    @Override
+                    public void onNext(List<Post> posts) {
+                        if(isViewAttached()) {
+                            view.getAllPostSuccess(posts);
+                            view.hideProgressBar();
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached()) {
+                            view.showError(e.getMessage());
+                            view.hideProgressBar();
+                        }
+                    }
+                    @Override
+                    public void onComplete() {
 
-            @Override
-            public void onError(String errorMsg) {
-                if(isViewAttached()) {
-                    view.showError(errorMsg);
-                    view.hideProgressBar();
-                }
-            }
-        });
-        //Acá usaremos un inteceptor de la capa domain
+                    }
+                });
     }
 }

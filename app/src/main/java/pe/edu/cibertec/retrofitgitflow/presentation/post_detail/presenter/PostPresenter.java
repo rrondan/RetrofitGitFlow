@@ -1,5 +1,9 @@
 package pe.edu.cibertec.retrofitgitflow.presentation.post_detail.presenter;
 
+import javax.inject.Inject;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
 import pe.edu.cibertec.retrofitgitflow.domain.post_detail_interactor.IPostDetailInteractor;
 import pe.edu.cibertec.retrofitgitflow.presentation.main.IMainContract;
@@ -9,8 +13,10 @@ public class PostPresenter implements
         IPostDetailContract.IPresenter {
 
     IPostDetailContract.IView view;
-    IPostDetailInteractor interactor;
+    private final IPostDetailInteractor interactor;
+    private Disposable disposable;
 
+    @Inject
     public PostPresenter(IPostDetailInteractor interactor) {
         this.interactor = interactor;
     }
@@ -23,6 +29,9 @@ public class PostPresenter implements
     @Override
     public void detachView() {
         this.view = null;
+        if(disposable != null){
+            disposable.dispose();
+        }
     }
 
     @Override
@@ -33,22 +42,33 @@ public class PostPresenter implements
     @Override
     public void getPost(int postId) {
         view.showProgressBar();
-        interactor.getPost(postId, new IPostDetailInteractor.PostDetailCallBack() {
-            @Override
-            public void onSuccess(Post post) {
-                if(isViewAttached()) {
-                    view.getPostSuccess(post);
-                    view.hideProgressBar();
-                }
-            }
+        interactor.getPost(postId)
+                .subscribe(new Observer<Post>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
 
-            @Override
-            public void onError(String errorMsg) {
-                if(isViewAttached()) {
-                    view.showError(errorMsg);
-                    view.hideProgressBar();
-                }
-            }
-        });
+                    @Override
+                    public void onNext(Post post) {
+                        if(isViewAttached()) {
+                            view.hideProgressBar();
+                            view.getPostSuccess(post);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached()) {
+                            view.hideProgressBar();
+                            view.showError(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
