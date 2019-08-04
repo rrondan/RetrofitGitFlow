@@ -4,9 +4,8 @@ import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
+import pe.edu.cibertec.retrofitgitflow.data.entities.PostDetail;
 import pe.edu.cibertec.retrofitgitflow.domain.post_detail_interactor.IPostDetailInteractor;
-import pe.edu.cibertec.retrofitgitflow.presentation.main.IMainContract;
 import pe.edu.cibertec.retrofitgitflow.presentation.post_detail.IPostDetailContract;
 
 public class PostPresenter implements
@@ -42,18 +41,18 @@ public class PostPresenter implements
     @Override
     public void getPost(int postId) {
         view.showProgressBar();
-        interactor.getPost(postId)
-                .subscribe(new Observer<Post>() {
+        interactor.getPostDetail(postId)
+                .subscribe(new Observer<PostDetail>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(Post post) {
+                    public void onNext(PostDetail postDetail) {
                         if(isViewAttached()) {
                             view.hideProgressBar();
-                            view.getPostSuccess(post);
+                            view.getPostDetailSuccess(postDetail);
                         }
                     }
 

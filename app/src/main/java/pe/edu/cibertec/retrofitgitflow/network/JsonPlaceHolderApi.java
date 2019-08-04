@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import io.reactivex.Observable;
+import pe.edu.cibertec.retrofitgitflow.data.entities.Comment;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,4 +17,7 @@ public interface JsonPlaceHolderApi {
 
     @GET("posts/{id}")
     Observable<Post> getPost(@Path("id") int postId);
+
+    @GET("post/{id}/comments")
+    Observable<List<Comment>> getComments(@Path("id") int postId);
 }

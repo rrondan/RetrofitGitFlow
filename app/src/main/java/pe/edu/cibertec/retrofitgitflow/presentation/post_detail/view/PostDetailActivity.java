@@ -1,6 +1,8 @@
 package pe.edu.cibertec.retrofitgitflow.presentation.post_detail.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +11,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import pe.edu.cibertec.retrofitgitflow.R;
 import pe.edu.cibertec.retrofitgitflow.base.BaseActivity;
+import pe.edu.cibertec.retrofitgitflow.data.entities.Comment;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
+import pe.edu.cibertec.retrofitgitflow.data.entities.PostDetail;
 import pe.edu.cibertec.retrofitgitflow.di.components.DaggerPresentationComponent;
 import pe.edu.cibertec.retrofitgitflow.di.modules.PresentationModule;
 import pe.edu.cibertec.retrofitgitflow.domain.post_detail_interactor.PostDetailInteractorImpl;
@@ -29,12 +35,14 @@ public class PostDetailActivity extends BaseActivity
     TextView userIdTextView;
     TextView titleTextView;
     TextView bodyTextView;
+    RecyclerView rvComments;
     ProgressBar progressBar;
+
+    CommentAdapter commentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -50,11 +58,15 @@ public class PostDetailActivity extends BaseActivity
         titleTextView = findViewById(R.id.titleTextView);
         bodyTextView = findViewById(R.id.bodyTextView);
         progressBar = findViewById(R.id.progressBar);
+        rvComments = findViewById(R.id.rv_comments);
         int id = getIntent().getIntExtra("post_id", -1);
         if(id == -1){
             showError("No Nos llego el postId");
             finish();
         }
+        commentAdapter = new CommentAdapter();
+        rvComments.setLayoutManager(new LinearLayoutManager(this));
+        rvComments.setAdapter(commentAdapter);
         presenter.attachView(this);
         presenter.getPost(id);
     }
@@ -83,11 +95,13 @@ public class PostDetailActivity extends BaseActivity
     }
 
     @Override
-    public void getPostSuccess(Post post) {
-        idTextView.setText(String.valueOf(post.getId()));
-        userIdTextView.setText(String.valueOf(post.getUserId()));
-        titleTextView.setText(post.getTitle());
-        bodyTextView.setText(post.getText());
+    public void getPostDetailSuccess(PostDetail postDetail) {
+        idTextView.setText(String.valueOf(postDetail.post.getId()));
+        userIdTextView.setText(String.valueOf(postDetail.post.getUserId()));
+        titleTextView.setText(postDetail.post.getTitle());
+        bodyTextView.setText(postDetail.post.getText());
+        commentAdapter.setCommentList(postDetail.comments);
+        commentAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -6,7 +6,10 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
+import io.reactivex.functions.BiFunction;
+import pe.edu.cibertec.retrofitgitflow.data.entities.Comment;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
+import pe.edu.cibertec.retrofitgitflow.data.entities.PostDetail;
 import pe.edu.cibertec.retrofitgitflow.network.ApiClient;
 import pe.edu.cibertec.retrofitgitflow.network.JsonPlaceHolderApi;
 import retrofit2.Call;
@@ -27,9 +30,15 @@ public class PostDetailInteractorImpl implements IPostDetailInteractor{
     }
 
     @Override
-    public Observable<Post> getPost(int postId) {
-        return jsonPlaceHolderApi.getPost(postId)
-                .observeOn(uiThread)
+    public Observable<PostDetail> getPostDetail(int postId) {
+        return Observable.zip(jsonPlaceHolderApi.getPost(postId), jsonPlaceHolderApi.getComments(postId),
+                new BiFunction<Post, List<Comment>, PostDetail>() {
+                    @Override
+                    public PostDetail apply(Post post, List<Comment> comments) throws Exception {
+                        return new PostDetail(post, comments);
+                    }
+                }
+                ).observeOn(uiThread)
                 .subscribeOn(executorThread);
     }
 }
