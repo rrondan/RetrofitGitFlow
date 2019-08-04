@@ -2,13 +2,16 @@ package pe.edu.cibertec.retrofitgitflow;
 
 import android.app.Application;
 
+import pe.edu.cibertec.retrofitgitflow.di.components.ApplicationComponent;
+import pe.edu.cibertec.retrofitgitflow.di.components.DaggerApplicationComponent;
 import pe.edu.cibertec.retrofitgitflow.di.components.DaggerPresentationComponent;
 import pe.edu.cibertec.retrofitgitflow.di.components.PresentationComponent;
+import pe.edu.cibertec.retrofitgitflow.di.modules.ApplicationModule;
 import pe.edu.cibertec.retrofitgitflow.di.modules.PresentationModule;
 
 public class MyApplication extends Application {
 
-    private PresentationComponent appComponent;
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -17,13 +20,13 @@ public class MyApplication extends Application {
     }
 
     void inicializarComponent(){
-        appComponent = DaggerPresentationComponent
+        applicationComponent = DaggerApplicationComponent
                 .builder()
-                .presentationModule(new PresentationModule())
+                .applicationModule(new ApplicationModule())
                 .build();
     }
 
-    public PresentationComponent getAppComponent() {
-        return appComponent;
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 }
