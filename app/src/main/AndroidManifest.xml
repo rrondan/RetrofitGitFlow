@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pe.edu.cibertec.retrofitgitflow">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,15 +19,39 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.rx_basic.RxBasicActivity"></activity>
-        <activity android:name=".presentation.post_detail.view.PostDetailActivity" />
-        <activity android:name=".presentation.main.view.MainActivity">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity android:name=".presentation.activities.create_post_firestore.CreatePostFirestoreActivity"/>
+        <activity android:name=".presentation.activities.post_detail_firestore.PostDetailFirestoreActivity" />
+        <activity android:name=".presentation.activities.posts_firestore.PostsFirestoreActivity" />
+        <activity android:name=".presentation.activities.menu.MenuActivity" />
+        <activity
+            android:name=".presentation.activities.register.RegisterActivity"
+            android:theme="@style/LoginTheme" />
+        <activity
+            android:name=".presentation.activities.login.LoginActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.activities.rx_basic.BasicRxActivity" />
+        <activity android:name=".presentation.activities.post_detail.PostDetailActivity" />
+        <activity android:name=".presentation.activities.main.MainActivity" />
     </application>
+
+
+
 
 </manifest>
