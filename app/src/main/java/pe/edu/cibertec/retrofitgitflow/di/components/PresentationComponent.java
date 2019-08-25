@@ -13,7 +13,8 @@ import pe.edu.cibertec.retrofitgitflow.presentation.activities.posts_firestore.P
 import pe.edu.cibertec.retrofitgitflow.presentation.activities.register.RegisterActivity;
 
 @PerActivity
-@Component (modules = PresentationModule.class, dependencies = ApplicationComponent.class)
+@Component (modules = PresentationModule.class,
+        dependencies = ApplicationComponent.class)
 public interface PresentationComponent {
     void inject(MainActivity mainActivity);
     void inject(PostDetailActivity postDetailActivity);

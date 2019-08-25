@@ -10,6 +10,7 @@ import io.reactivex.functions.BiFunction;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Comment;
 import pe.edu.cibertec.retrofitgitflow.data.entities.Post;
 import pe.edu.cibertec.retrofitgitflow.data.entities.PostDetail;
+import pe.edu.cibertec.retrofitgitflow.data.repository.IPostRepository;
 import pe.edu.cibertec.retrofitgitflow.network.ApiClient;
 import pe.edu.cibertec.retrofitgitflow.network.JsonPlaceHolderApi;
 import retrofit2.Call;
@@ -18,27 +19,19 @@ import retrofit2.Response;
 
 public class PostDetailInteractorImpl implements IPostDetailInteractor{
 
-    private final JsonPlaceHolderApi jsonPlaceHolderApi;
+    private final IPostRepository postRepository;
     private final Scheduler uiThread;
     private final Scheduler executorThread;
-
     @Inject
-    public PostDetailInteractorImpl(JsonPlaceHolderApi jsonPlaceHolderApi, Scheduler uiThread, Scheduler executorThread) {
-        this.jsonPlaceHolderApi = jsonPlaceHolderApi;
+    public PostDetailInteractorImpl(IPostRepository postRepository, Scheduler uiThread, Scheduler executorThread) {
+        this.postRepository = postRepository;
         this.uiThread = uiThread;
         this.executorThread = executorThread;
     }
-
     @Override
     public Observable<PostDetail> getPostDetail(int postId) {
-        return Observable.zip(jsonPlaceHolderApi.getPost(postId), jsonPlaceHolderApi.getComments(postId),
-                new BiFunction<Post, List<Comment>, PostDetail>() {
-                    @Override
-                    public PostDetail apply(Post post, List<Comment> comments) throws Exception {
-                        return new PostDetail(post, comments);
-                    }
-                }
-                ).observeOn(uiThread)
+        return postRepository.getPostDetail(postId)
+                .observeOn(uiThread)
                 .subscribeOn(executorThread);
     }
 }
