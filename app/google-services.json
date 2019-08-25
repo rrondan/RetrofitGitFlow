@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "618828391659",
+    "firebase_url": "https://retrofit-gitflow.firebaseio.com",
+    "project_id": "retrofit-gitflow",
+    "storage_bucket": "retrofit-gitflow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618828391659:android:50b3ee633cc04e5b",
+        "android_client_info": {
+          "package_name": "pe.edu.cibertec.retrofitgitflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618828391659-bm2d4095pcl55hrek1v0lg9caoqnuo11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgxIXQqkC13DpaxZvC6JOjBQUeVIc1rgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618828391659-bm2d4095pcl55hrek1v0lg9caoqnuo11.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
