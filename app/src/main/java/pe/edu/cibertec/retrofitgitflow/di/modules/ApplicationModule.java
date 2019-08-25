@@ -2,6 +2,7 @@ package pe.edu.cibertec.retrofitgitflow.di.modules;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Named;
@@ -77,5 +78,11 @@ public class ApplicationModule {
     @Singleton
     Context provideContext() {
         return mContext;
+    }
+
+    @Provides
+    @Singleton
+    FirebaseAuth provideFirebaseAuth(){
+        return FirebaseAuth.getInstance();
     }
 }

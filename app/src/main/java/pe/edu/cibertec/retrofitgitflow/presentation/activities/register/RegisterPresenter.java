@@ -2,16 +2,19 @@ package pe.edu.cibertec.retrofitgitflow.presentation.activities.register;
 
 import android.text.TextUtils;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import javax.inject.Inject;
 
 public class RegisterPresenter implements IRegisterContract.IPresenter {
 
     private IRegisterContract.IView view;
 
+    private final FirebaseAuth firebaseAuth;
 
     @Inject
-    public RegisterPresenter() {
-
+    public RegisterPresenter(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
     }
 
     @Override
@@ -35,7 +38,17 @@ public class RegisterPresenter implements IRegisterContract.IPresenter {
             if(isViewAttached()) view.showError("No deje los campos vacios");
         } else {
             if(isViewAttached()) view.showProgressDialog();
-
+            firebaseAuth.createUserWithEmailAndPassword(username,password)
+                    .addOnCompleteListener(task -> {
+                        if(isViewAttached()){
+                            view.hideProgressDialog();
+                            if(task.isSuccessful()){
+                                view.goToMenu();
+                            } else {
+                                view.showError(task.getException().getMessage());
+                            }
+                        }
+                    });
         }
     }
 }

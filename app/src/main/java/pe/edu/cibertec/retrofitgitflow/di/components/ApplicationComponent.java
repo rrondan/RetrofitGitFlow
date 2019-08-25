@@ -3,6 +3,7 @@ package pe.edu.cibertec.retrofitgitflow.di.components;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Named;
@@ -22,6 +23,7 @@ public interface ApplicationComponent {
 
     Retrofit exposeRetrofit();
     Context exposeContext();
+    FirebaseAuth exposeFirebaseAuth();
 
     @Named("ui_thread") Scheduler uiThread();
     @Named("executor_thread") Scheduler executorThread();

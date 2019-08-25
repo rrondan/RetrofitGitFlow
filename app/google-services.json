@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "341442415474",
+    "firebase_url": "https://cibertec-dfbbc.firebaseio.com",
+    "project_id": "cibertec-dfbbc",
+    "storage_bucket": "cibertec-dfbbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341442415474:android:50b3ee633cc04e5b",
+        "android_client_info": {
+          "package_name": "pe.edu.cibertec.retrofitgitflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341442415474-aol00ijctchrkdtnfeg3grv1a6v8aeba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb2UOMy7eTEaGxgzF4draRlV3FwG3Dr2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341442415474-aol00ijctchrkdtnfeg3grv1a6v8aeba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
